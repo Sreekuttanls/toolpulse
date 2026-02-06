@@ -11,7 +11,11 @@ const nextConfig: NextConfig = {
 
   // Force inclusion of ONNX binaries in Vercel Serverless Function
   outputFileTracingIncludes: {
-    '/**/*': ['./node_modules/onnxruntime-node/bin/**/*.node', './node_modules/onnxruntime-node/bin/**/*.so*'],
+    '/**/*': [
+      './node_modules/onnxruntime-node/bin/**/*.node',
+      './node_modules/onnxruntime-node/bin/**/*.so*',
+      './node_modules/sharp/**/*'
+    ],
   },
 
   // Silence Turbopack error by providing empty config (allows Webpack fallback/coexistence)
