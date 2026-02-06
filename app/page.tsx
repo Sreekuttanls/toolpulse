@@ -77,7 +77,7 @@ export default function Home() {
             AI-Powered Discovery
           </div>
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
-            Find the <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-500">perfect tool</span> for your stack.
+            Tool Pulse: <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-500">Find the perfect tool</span>
           </h1>
 
           <div className="max-w-2xl mx-auto relative mt-8">
