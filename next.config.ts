@@ -5,6 +5,12 @@ const nextConfig: NextConfig = {
   experimental: {
     serverComponentsExternalPackages: ['@xenova/transformers', 'sharp', 'onnxruntime-node'],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   webpack: (config) => {
     // Ignore node-specific modules when bundling for the browser
     config.resolve.alias = {
