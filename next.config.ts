@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
 
   // Force inclusion of ONNX binaries in Vercel Serverless Function
   outputFileTracingIncludes: {
-    '/**/*': [
+    '/api/**/*': [
       './node_modules/onnxruntime-node/bin/**/*.node',
       './node_modules/onnxruntime-node/bin/**/*.so*',
       './node_modules/sharp/**/*'
