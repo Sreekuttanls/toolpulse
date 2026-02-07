@@ -14,6 +14,8 @@ async function getEmbedding(text: string) {
             const pipe = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', {
                 // Explicitly use CPU to avoid potential GPU/WASM confusions in serverless
                 device: 'cpu',
+                // Vercel file system is read-only except for /tmp
+                cache_dir: '/tmp'
             });
             generateEmbedding = async (t: string) => {
                 const output = await pipe(t, { pooling: 'mean', normalize: true });

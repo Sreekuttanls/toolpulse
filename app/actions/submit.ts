@@ -12,6 +12,8 @@ async function getEmbedding(text: string) {
     try {
         const pipe = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', {
             device: 'cpu',
+            // Vercel file system is read-only except for /tmp
+            cache_dir: '/tmp'
         });
         const output = await pipe(text, { pooling: 'mean', normalize: true });
         console.log('Embedding generated successfully');
