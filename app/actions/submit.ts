@@ -30,8 +30,24 @@ export type SubmitState = {
     success?: boolean;
 };
 
+// Helper to extract name from URL
+function extractNameFromUrl(url: string): string {
+    try {
+        // Ensure protocol exists for URL parsing
+        const validUrl = url.startsWith('http') ? url : `https://${url}`;
+        const urlObj = new URL(validUrl);
+        const hostname = urlObj.hostname.replace(/^www\./, '');
+        // Take the first part of the domain (e.g., "google" from "google.com")
+        const namePart = hostname.split('.')[0];
+        // Capitalize first letter
+        return namePart.charAt(0).toUpperCase() + namePart.slice(1);
+    } catch (e) {
+        return 'Untitled Tool';
+    }
+}
+
 export async function submitTool(prevState: SubmitState, formData: FormData): Promise<SubmitState> {
-    const name = formData.get('name') as string;
+    let name = formData.get('name') as string;
     const url = formData.get('url') as string;
     const description = formData.get('description') as string;
     const tagline = formData.get('tagline') as string;
@@ -42,17 +58,22 @@ export async function submitTool(prevState: SubmitState, formData: FormData): Pr
         return { error: 'URL and Description are required.' };
     }
 
+    // 2. Auto-generate Name if missing
+    if (!name || name.trim() === '') {
+        name = extractNameFromUrl(url);
+    }
+
     try {
-        // 2. Generate Embedding
+        // 3. Generate Embedding
         const embedding = await getEmbedding(description);
 
-        // 3. Process Categories
+        // 4. Process Categories
         // Split by comma if provided, else default to 'Uncategorized'
         const categories = categoryStr
             ? categoryStr.split(',').map(c => c.trim()).filter(c => c.length > 0)
             : [];
 
-        // 4. Insert into Supabase
+        // 5. Insert into Supabase
         const { error } = await supabase.from('tools').insert({
             name,
             website_url: url,
@@ -69,7 +90,7 @@ export async function submitTool(prevState: SubmitState, formData: FormData): Pr
         }
 
         revalidatePath('/'); // Refresh home page data
-        return { success: true, message: 'Tool submitted successfully! It is now searchable via AI.' };
+        return { success: true, message: `Tool "${name}" submitted successfully!` };
 
     } catch (err) {
         console.error('Submission Error:', err);
