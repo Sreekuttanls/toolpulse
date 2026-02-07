@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description: "Find the perfect tool for your stack with AI-powered search.",
 };
 
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/next"
 
 export default function RootLayout({
   children,
