@@ -1,6 +1,6 @@
 'use server';
 
-import { pipeline } from '@xenova/transformers';
+import { pipeline } from '@huggingface/transformers';
 import { supabase } from '@/utils/supabase/client';
 import { revalidatePath } from 'next/cache';
 

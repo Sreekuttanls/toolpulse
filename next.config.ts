@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // Next.js 15+: serverExternalPackages is at root
-  serverExternalPackages: ['@xenova/transformers', 'sharp', 'onnxruntime-node'],
+  serverExternalPackages: ['@huggingface/transformers', 'sharp', 'onnxruntime-node'],
 
   // Ignore TypeScript errors during build
   typescript: {
@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
 
   // Force inclusion of ONNX binaries in Vercel Serverless Function
   outputFileTracingIncludes: {
-    '/api/**/*': [
+    '/**/*': [
       './node_modules/onnxruntime-node/bin/**/*.node',
       './node_modules/onnxruntime-node/bin/**/*.so*',
       './node_modules/sharp/**/*'

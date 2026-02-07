@@ -1,6 +1,6 @@
 'use server';
 
-import { pipeline } from '@xenova/transformers';
+import { pipeline } from '@huggingface/transformers';
 import { supabase } from '@/utils/supabase/client';
 
 // Singleton for the model to avoid reloading on every request
