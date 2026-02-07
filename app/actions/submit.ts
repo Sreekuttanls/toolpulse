@@ -8,15 +8,18 @@ import { revalidatePath } from 'next/cache';
 let generateEmbedding: any = null;
 
 async function getEmbedding(text: string) {
-    if (!generateEmbedding) {
-        console.log('Initializing Embedding Model for Submission...');
-        const pipe = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
-        generateEmbedding = async (t: string) => {
-            const output = await pipe(t, { pooling: 'mean', normalize: true });
-            return Array.from(output.data);
-        };
+    console.log('Generating embedding for submission...');
+    try {
+        const pipe = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', {
+            device: 'cpu',
+        });
+        const output = await pipe(text, { pooling: 'mean', normalize: true });
+        console.log('Embedding generated successfully');
+        return Array.from(output.data);
+    } catch (error) {
+        console.error('Submission Embedding Error:', error);
+        throw error;
     }
-    return await generateEmbedding(text);
 }
 
 export type SubmitState = {

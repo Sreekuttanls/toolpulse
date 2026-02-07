@@ -9,12 +9,21 @@ let generateEmbedding: any = null;
 async function getEmbedding(text: string) {
     if (!generateEmbedding) {
         console.log('Initializing Embedding Model on Server...');
-        // Ensure "sharp" is available in "next.config.ts" external packages
-        const pipe = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
-        generateEmbedding = async (t: string) => {
-            const output = await pipe(t, { pooling: 'mean', normalize: true });
-            return Array.from(output.data);
-        };
+        try {
+            // Ensure "sharp" is available in "next.config.ts" external packages
+            const pipe = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', {
+                // Explicitly use CPU to avoid potential GPU/WASM confusions in serverless
+                device: 'cpu',
+            });
+            generateEmbedding = async (t: string) => {
+                const output = await pipe(t, { pooling: 'mean', normalize: true });
+                return Array.from(output.data);
+            };
+            console.log('Model initialized successfully');
+        } catch (error) {
+            console.error('Failed to initialize embedding model:', error);
+            throw error;
+        }
     }
     return await generateEmbedding(text);
 }
